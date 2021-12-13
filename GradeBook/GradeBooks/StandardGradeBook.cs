@@ -22,8 +22,8 @@ namespace GradeBook.GradeBooks
             Create a constructor for StandardGradeBook  that sets the Type property to GradeBookType.Standard.
          
          */
-        public StandardGradeBook(string name):
-            base(name)
+        public StandardGradeBook(string name, bool isWeighted):
+            base(name, isWeighted)
         {
             Type = Enums.GradeBookType.Standard;
         }
