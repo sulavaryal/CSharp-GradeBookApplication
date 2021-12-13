@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GradeBook.GradeBooks
@@ -25,9 +26,52 @@ namespace GradeBook.GradeBooks
             Create a constructor for RankedGradeBook that sets the Type property to GradeBookType.Ranked.
          
          */
+
+       
+         
+         
         public RankedGradeBook(string name):base(name)
         {
             Type = Enums.GradeBookType.Ranked;
         }
+
+        /*
+           Create GetLetterGrade Override
+
+           In the RankedGradeBook class create an override for the GetLetterGrade method.
+
+           The GetLetterGrade method returns a char and accepts a double named "averageGrade".
+
+           If there are less than 5 students throw an InvalidOperationException. (Ranked-grading requires a minimum of 5 students to work)
+
+           Return 'F' at the end of the method.
+       */
+
+        public override char GetLetterGrade(double averageGrade)
+        {
+            if (Students.Count < 5) 
+            {
+                throw new InvalidOperationException("Ranked-grading requires a minimum of 5 students to work");
+            }
+
+            // Top 20 percent of the number of total students in class 
+            var top20percent = (int)Math.Ceiling(Students.Count * (0.20));
+
+            // Take all your students avg grade, put it in descending order         
+            var grades = Students.OrderByDescending(s => s.AverageGrade)
+                .Select(s=>s.AverageGrade).ToList();
+
+            if (grades[top20percent -1 ] <= averageGrade)
+                return 'A';
+            else if (grades[(top20percent * 2) - 1] <= averageGrade)
+                return 'B';
+            else if (grades[(top20percent * 3) -1] <= averageGrade)
+                return 'C';
+            else if (grades[(top20percent * 4) - 1] <= averageGrade)
+                return 'D';
+            else
+                return 'F';
+        }
+
     }
 }
